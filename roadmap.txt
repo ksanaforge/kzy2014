@@ -1,0 +1,7 @@
+download and analyse chise
+download glyphwiki
+download Unihan
+
+calculate strokecount of Extension E
+Unihan_radicalStrokeCounts.txt
+Unihan_variants.txt
