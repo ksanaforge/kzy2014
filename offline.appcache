@@ -1,7 +1,12 @@
 CACHE MANIFEST
-# Updated on Mon Sep 08 2014 18:56:01 GMT+0800 (Taipei Standard Time)
+# Updated on Mon Sep 08 2014 23:47:24 GMT+0800 (Taipei Standard Time)
 /index.html
 /build.js
 /build.css
 /jquery.js
 /react-with-addons.js
+NETWORK:
+http://ya.ksana.tw/kdb/glyphwiki.kdb
+http://ya.ksana.tw/kdb/chise.kdb
+/glyphwiki.kdb
+/chise.kdb

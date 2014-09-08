@@ -1,4 +1,5 @@
 var fs=require("fs");
+var path=require("path");
 var request=require("request");
 var baseurl="http://git.chise.org/gitweb/?p=chise/ids.git;a=blob_plain;f=";
 var files=["IDS-CBETA.txt",
@@ -15,11 +16,14 @@ var files=["IDS-CBETA.txt",
 "IDS-UCS-Ext-D.txt",
 "IDS-UCS-Ext-E.txt"];
 var download=function() {
-	if (!fs.existsSync("chise")) fs.mkdirSync("chise");
+	if (!fs.existsSync("components/kzy-chise")) {
+		fs.mkdirSync("components/kzy-chise");
+		fs.mkdirSync("components/kzy-chise/raw");
+	}
 	for (var i=0;i<files.length;i++) {
 		console.log("downloading",files[i]);
 		request(baseurl+files[i]).pipe(fs.createWriteStream(__dirname+"/components/kzy-chise/raw/"+files[i]));
 	}	
 }
-
+if (__filename==path.resolve(process.argv[1])) download();
 module.exports=download;

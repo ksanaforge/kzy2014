@@ -32,6 +32,7 @@ var config={
 	,glob:"glyphwiki.xml"
 	,pageSeparator:"pb.n"
 	,reset:true
+	,outdir:"../../"
 	,setupHandlers:setupHandlers
 	,finalized:finalized
 	,finalizeField:finalizeField
