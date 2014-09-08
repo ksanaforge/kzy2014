@@ -4,3 +4,8 @@
 chise
 glyphwiki
 unihan
+*.txt
+*.xml
+raw
+build.*
+*.json

@@ -1,27 +1,18 @@
 {
-  "author": {
-    "name": "Yap Cheah Shen",
-    "email": "yapcheahshen@gmail.com",
-    "url": "http://github.com/yapcheahshen/"
-  },
   "name": "kzy",
-  "description": "ksana ziyin",
+  "description": "New html5 application",
   "version": "0.0.1",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/ksanaforge/kzy.git"
+  "main": "index.html",
+  "single-instance":true,
+  "window": {
+    "toolbar": true,
+    "width": 1060,
+    "height": 700
   },
-  "main": "index.js",
-  "engines": {
-    "node": "*"
-  },
-  "dependencies": {
-  },
-  "devDependencies": {
-    "unzip": "*",
-    "zlib": "*",
-    "request": "*"
-  },
-  "license": "BSD",
-  "homepage": "https://github.com/ksanaforge/kzy"
+ "repositories": [
+  {
+            "type": "git", 
+            "url": "https://github.com/ksanaforge/kzy"
+       }  
+    ]
 }

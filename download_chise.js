@@ -18,7 +18,7 @@ var download=function() {
 	if (!fs.existsSync("chise")) fs.mkdirSync("chise");
 	for (var i=0;i<files.length;i++) {
 		console.log("downloading",files[i]);
-		request(baseurl+files[i]).pipe(fs.createWriteStream(__dirname+"/chise/"+files[i]));
+		request(baseurl+files[i]).pipe(fs.createWriteStream(__dirname+"/components/kzy-chise/raw/"+files[i]));
 	}	
 }
 
