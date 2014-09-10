@@ -3,9 +3,10 @@ var kse=Require('ksana-document').kse; // Ksana Search Engine
 var bootstrap=Require("bootstrap");  
 var fileinstaller=Require("fileinstaller");  // install files to browser sandboxed file system
 var kageglyph=Require("kageglyph");
-var require_kdb=[{  //list of ydb for running this application
-  filename:"glyphwiki.kdb"  , url:"http://ya.ksana.tw/kdb/glyphwiki.kdb" , desc:"Glyphiwiki"
-}];    
+var require_kdb=[  //list of ydb for running this application
+  {filename:"glyphwiki.kdb"  , url:"http://ya.ksana.tw/kdb/glyphwiki.kdb" , desc:"Glyphiwiki"}  
+ ,{filename:"chise.kdb"  , url:"http://ya.ksana.tw/kdb/chise.kdb" , desc:"Chise"}
+];    
 var main = React.createClass({
   getInitialState: function() {
     return {res:null,db:null };
@@ -55,7 +56,7 @@ var main = React.createClass({
       return (
         <div>{this.state.dialog?this.openFileinstaller():null}
           {this.renderinputs()}
-          <kageglyph code="u76df"/>
+          <kageglyph code="u2fa19"/>
           <resultlist res={this.state.res}/>
         </div>
       );

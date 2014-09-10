@@ -48,12 +48,14 @@ var gen=function(){
 	files.map(parseFile);
 	var out=[];
 	for (var i in decompose) {
-		out.push([i,decompose[i]]);
+		decompose[i].sort(function(a,b){return a-b});
+		out.push('"'+i+'":['+decompose[i]+']');
 	}
 	out.sort(function(a,b){
 		return (b[1].length-a[1].length);
 	});
-	fs.writeFileSync("decompose.txt",out.join("\n"),"utf8");
+	var output="{"+out.join(",\n")+"\n}"
+	fs.writeFileSync("decompose.json",output,"utf8");
 }
 if (__filename==path.resolve(process.argv[1])) gen();
 module.exports=gen;

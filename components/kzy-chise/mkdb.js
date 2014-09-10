@@ -6,29 +6,30 @@ var warning=function() {
 	console.log.apply(console,arguments);
 }
 
+var getChise=function() {
+	var res=JSON.parse(require('fs').readFileSync('./decompose.json','utf8'));
+	for (var i in res) res[i].sorted=true;
+	return res;
+}
+
 var finalized=function(session) {
 	console.log("VPOS",session.vpos);
 	console.log("FINISHED")
 }
-var finalizeField=function(fields) {
-
-}
 var config={
-	name:"glyphwiki"
+	name:"chise"
 	,meta:{
 		config:"simple1"	
 	},
 	extra: {
-		glyphwiki: JSON.parse(require('fs').readFileSync('./glyphwiki.json','utf8')),
-		//related: JSON.parse(require('fs').readFileSync('./related.json'),'utf8'),
+		chise: getChise()
 	}
-	,estimatesize:50430400
-	,glob:"glyphwiki.xml"
+	,estimatesize:10430400
+	,glob:"chise.xml"
 	,pageSeparator:"pb.n"
 	,reset:true
 	,outdir:"../../"
 	,finalized:finalized
-	,finalizeField:finalizeField
 	,warning:warning
 }
 setTimeout(function(){ //this might load by gulpfile-app.js
