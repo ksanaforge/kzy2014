@@ -55,7 +55,7 @@ var main = React.createClass({
       return (
         <div>{this.state.dialog?this.openFileinstaller():null}
           {this.renderinputs()}
-          <kageglyph/>
+          <kageglyph code="u76df"/>
           <resultlist res={this.state.res}/>
         </div>
       );

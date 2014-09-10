@@ -1,3 +1,4 @@
+
 var gen=function() {
 	var customfunc=require(__dirname+'/api');
 	console.log('loading text',process.cwd());
@@ -37,6 +38,7 @@ var gen=function() {
 		if (obj['related']==key || obj['related']=='u3013') delete obj['related'];
 
 		obj['d']=customfunc.parse(obj['data'],key).bytearr;
+		//obj['d']=obj['data']
 		delete obj['data'];
 
 		//split into smaller group
@@ -79,5 +81,5 @@ var gen=function() {
 		
 }
 
-if (__filename==path.resolve(process.argv[1])) gen();
+if (typeof process!="undefined" &&__filename==require("path").resolve(process.argv[1])) gen();
 module.exports=gen;

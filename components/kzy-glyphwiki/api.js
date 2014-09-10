@@ -46,6 +46,7 @@ var parse = function(str, key) {
 	var stringprefix = 254;
 	var bigintprefix = 250;
 	var buhins = {};
+	var buhincount=0;
 	var arr = str.split("$");
 	var r = [];
 	for (var i in arr) {
@@ -57,14 +58,17 @@ var parse = function(str, key) {
 			if (isNaN(stk[j])) {
 				r.push(stringprefix);
 				var buhin = stk[j].replace(/@.*$/, '');
-				if (!buhins[buhin]) buhins[buhin] = 0;
+				if (!buhins[buhin]) {
+					buhins[buhin] = 0;
+					buhincount++;
+				}
 				buhins[buhin]++;
 				for (var k in buhin) {
 					if (buhin[k] === "@") break; // skip version number
 					r.push(buhin.charCodeAt(k));
 				}
 			} else {
-				ii = parseInt(stk[j]);
+				var ii = parseInt(stk[j]);
 				if (ii < 0) {
 					r.push(negativeprefix);
 					r.push(-ii);
@@ -84,7 +88,8 @@ var parse = function(str, key) {
 	}
 	return {
 		bytearr: r,
-		buhins: buhins
+		buhins: buhins,
+		buhincount: buhincount
 	};
 }
 
@@ -100,40 +105,33 @@ var getGlyphGroup = function(key) {
 	return group;
 }
 
-var getBuhin = function(key) {
-	var group = this.customfunc['getGlyphGroup'].apply(this, [key]);
-	if (group[0] != '$') key = key.substring(group.length);
-	var d = this.get(['extra', 'glyphwiki', group, key, 'd'], true);
-	if (!d) return "";
-	return this.customfunc['stringify'].apply(this, [d]);
-}
-
-//get Buhins recursively
-
-var getBuhins = function(K) {
-	var B = {};
-	var getbuhins = function(key, buhins) {
-		var data = this.customfunc['getBuhin'].apply(this, [key]);
-		var r = this.customfunc['parse'].apply(this, [data]);
-		if (data) buhins[key] = data;
-		for (var i in r.buhins) {
-			getbuhins.apply(this, [i, buhins]);
-		}
+var getBuhins=function(engine,key,cb,context) {
+	if (typeof cb.__unresolved=="undefined"||cb.__unresolved==0) {//first call
+		cb.__unresolved=1; 
+	  cb.out={};
 	}
-	if (K.indexOf(':') > -1) { //K is command
-		var r = this.customfunc['parse'].apply(this, [K]);
-		for (var i in r.buhins) {
-			getbuhins.apply(this, [i, B]);
+	var group = getGlyphGroup(key);
+  var k=key;
+	if (group[0] != '$') k = key.substring(group.length);
+	engine.get(['extra', 'glyphwiki', group, k, 'd'], function(data){
+		if (typeof data=="undefined") {
+			cb.__unresolved=0;
+			cb.apply(context,[null]);
+			return;
 		}
-
-	} else {
-		getbuhins.apply(this, [K, B]);
-	}
-
-	return B;
+		cb.__unresolved--;
+		cb.out[key]=stringify(data);
+		var r=parse(cb.out[key]);
+		if (r.buhincount) {
+			cb.__unresolved+=r.buhincount;
+			for (var buhin in r.buhins) getBuhins(engine,buhin,cb,context);
+		}
+		if (cb.__unresolved==0) {
+			cb.apply(context,[cb.out]);
+		}
+	});
 }
 module.exports = {
-	getBuhin: getBuhin,
 	getBuhins: getBuhins,
 	getGlyphGroup: getGlyphGroup,
 	parse: parse,

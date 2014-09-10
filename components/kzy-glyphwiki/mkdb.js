@@ -26,9 +26,9 @@ var config={
 	},
 	extra: {
 		glyphwiki: JSON.parse(require('fs').readFileSync('./glyphwiki.json'),'utf8'),
-		related: JSON.parse(require('fs').readFileSync('./related.json'),'utf8'),
+		//related: JSON.parse(require('fs').readFileSync('./related.json'),'utf8'),
 	}
-	,estimatesize:50430400
+	,estimatesize:80430400
 	,glob:"glyphwiki.xml"
 	,pageSeparator:"pb.n"
 	,reset:true
