@@ -8,21 +8,27 @@ var glyphwiki=Require("glyphwiki").api;
 var Kde=Require("ksana-document").kde;
 var kageglyph = React.createClass({
   getInitialState: function() {
-    Kde.open("glyphwiki",function(db){
-      this.setState({db:db});
-      this.fetchGlyph(this.props.code);
-    },this);
-    return {};
+    return {db:this.props.db};
+  },
+  componentDidMount:function() {
+    if (!this.state.db) {
+      Kde.open("glyphwiki",function(db){
+        this.setState({db:db});
+        this.fetchGlyph(this.props.code,this.props.size);
+      },this);
+    } else {
+      this.fetchGlyph(this.props.code,this.props.size);
+    }
   },
   shouldComponentUpdate:function(nextProps,nextState) {
     if (nextProps.code!=this.props.code) {
-      this.fetchGlyph(nextProp.code);
+      this.fetchGlyph(nextProps.code,nextProps.size);
       return true;
     }
     return  (nextState.svg!=this.state.svg || nextState.db!=this.state.db)
   },
-  fetchGlyph:function(code) {
-    if (!this.state.db) return; //db not ready
+  fetchGlyph:function(code,size) {
+    if (!this.state || !this.state.db) return; //db not ready
     glyphwiki.getBuhins(this.state.db,code,function(buhins){
       var kage = new Kage();
       kage.kUseCurve = true;
@@ -33,8 +39,13 @@ var kageglyph = React.createClass({
       }
       kage.makeGlyph(polygons, code);
       var svg=polygons.generateSVG(true);
-      this.setState({svg:svg});
 
+      //viewBox="0 0 200 200" width="200" height="200"
+      size=size||128;
+      svg=svg.replace('viewBox="0 0 200 200" width="200" height="200"',
+        'viewBox="0 0 200 200" width="'+size+'" height="'+size+'"');
+
+      this.setState({svg:svg});
     },this);
 
     //kage.kBuhin.push("u6f22", "99:150:0:9:12:73:200:u6c35-07:0:-10:50$99:0:0:54:10:190:199:u26c29-07");
@@ -44,7 +55,7 @@ var kageglyph = React.createClass({
   },
   render: function() {
     return (
-      <div dangerouslySetInnerHTML={{__html:this.state.svg}}/>
+      <span dangerouslySetInnerHTML={{__html:this.state.svg}}/>
     );
   }
 });

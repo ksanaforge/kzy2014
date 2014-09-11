@@ -63,7 +63,8 @@ var strokecount=function(ch) {
 	} else if (code<0x20000) {
 		return bmpstroke.charCodeAt(code-0x3400)-0x23 || 0;
 	} else {
-		return eudc(ch) || 0 ;
+		//return eudc(ch) || 0 ;
+		return 0;
 	}
 };
 strokecount.withstroke=chwithstrokecount;

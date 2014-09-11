@@ -11,12 +11,18 @@ var require_kdb=[  //list of ydb for running this application
 ];    
 var main = React.createClass({
   getInitialState: function() {
-    return {res:null,db:null };
+    return {res:null,db:null,glyphs:[],glyphwiki:null};
   },
   onReady:function(usage,quota) {  //handler when kdb is ready
-    if (!this.state.db) kde.open("glyphwiki",function(db){
-        this.setState({db:db});  
-        this.dosearch();
+    if (!this.state.glyphwiki) kde.open("glyphwiki",function(db){
+        this.setState({glyphwiki:db});  
+        //var k=<kageglyph db={this.state.glyphwiki} code="u4e03" size="64"/>
+        var that=this;
+        db.get(["extra","glyphwiki","$"],function(){}); //workaround to prefetch
+        setTimeout(
+          function(){
+            that.dosearch()
+          },10);
     },this);      
     this.setState({dialog:false,quota:quota,usage:usage});
   },
@@ -27,34 +33,38 @@ var main = React.createClass({
   dosearch:function() {   
     var tofind=this.refs.tofind.getDOMNode().value;
     chise.load(tofind,function(partindex){
-      var res=glypheme.search(partindex,tofind);  
-      console.log(res);
-    });
+      var res=glypheme.search(partindex,tofind);
+      if (res.length>100) res.length=100;
+      this.setState({glyphs:res,todraw:JSON.parse(JSON.stringify(res))});
+    },this);
   }, 
   openFileinstaller:function(autoclose) { // open file dialog, autoclose==true for initalizing application
-
     if (window.location.origin.indexOf("http://127.0.0.1")==0) {
       for (var i=0;i<require_kdb.length;i++) {
         require_kdb[i].url=window.location.origin+"/"+require_kdb[i].filename;  
       }
-    }
-
+    } 
     return <fileinstaller quota="512M" autoclose={autoclose} needed={require_kdb} 
                      onReady={this.onReady}/>
   },   
   renderinputs:function() {  // input interface for search
-    if (this.state.db) {
+    if (this.state.glyphwiki) {
       return ( 
         <div><input size="10" className="tofind" ref="tofind" 
-        onInput={this.autosearch} defaultValue="奇"></input>
+        onInput={this.autosearch} defaultValue="奇4"></input>
         </div>
-        )      
+        )       
     } else {
       return <span>loading database....</span>
     }
   },
   fileinstallerDialog:function() { //open the file installer dialog
       this.setState({dialog:true});
+  },
+  renderGlyph:function(code) {
+    if (!this.state.glyphwiki) return null;
+    return <kageglyph db={this.state.glyphwiki} 
+      code={"u"+code.toString(16)} size="64"/>
   },
   render: function() {  //main render routine
     if (!this.state.quota) { // install required db
@@ -63,8 +73,8 @@ var main = React.createClass({
       return (
         <div>{this.state.dialog?this.openFileinstaller():null}
           {this.renderinputs()}
-          <kageglyph code="u2fa19"/>
-          <resultlist res={this.state.res}/>
+          {this.state.glyphs.map(this.renderGlyph)}
+          
         </div>
       );
     }
@@ -73,10 +83,13 @@ var main = React.createClass({
       if (this.refs.tofind) this.refs.tofind.getDOMNode().focus();
   },
   componentDidMount:function() {
-      this.focus();
+    this.focus();
+    kde.open("glyphwiki",function(db){
+      this.setState({glyphwiki:db});
+    },this);
   },
   componentDidUpdate:function() {
-      this.focus();
+    this.focus();
   } 
 });
 var resultlist=React.createClass({  //should search result
