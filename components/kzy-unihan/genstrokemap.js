@@ -1,5 +1,8 @@
 ﻿var fs=require('fs');
 var charstroke=JSON.parse(fs.readFileSync('./kTotalStrokes.json','utf8'));  //from extractkey.js
+var exte_stroke=JSON.parse(fs.readFileSync('./strokecount-exte.json','utf8'));  //from extractkey.js
+for (var i in exte_stroke) charstroke[i]=exte_stroke[i];
+
 var  getutf32 = function (opt) { // return ucs32 value from a utf 16 string, advance the string automatically
 	opt.thechar='';
 	if (!opt.widestring) return 0;
@@ -19,6 +22,7 @@ var mapbmp=[]; //start from 0x3400
 var mapsur=[];  // start from 0x20000
 //sinica eudc need extra mapping
 var maxstroke=0;
+var count=0;
 for (var i in charstroke) {
 	var stroke=parseInt(charstroke[i]);
 	
@@ -27,18 +31,20 @@ for (var i in charstroke) {
 	var code=getutf32(opt);
 	if (code>=0x3400 && code<=0x9FFF ) {
 		mapbmp[ code-0x3400 ] = stroke;
-	} else if (code>=0x20000 &&  code<=0x2B81F) {
+	} else if (code>=0x20000 &&  code<=0x2CEA1) {//up to extension E
 		mapsur[code-0x20000] = stroke;
 	}
 	if (stroke>maxstroke) maxstroke=stroke;
 	if (opt.widestring!=="") throw "key should only have one character";
 	
 }
+var bmpunknown=0,surunknown=0;
 var bmpstr="";
 for (var i=0;i<mapbmp.length;i++) {
 	var sc=mapbmp[i];
-	if (typeof(sc)=='undefined') {
+	if (typeof(sc)=='undefined') { //stroke count unknown
 		sc=0;
+		bmpunknown++;
 		mapbmp[i]=0;
 	}
 	bmpstr+=String.fromCharCode(0x23+sc);
@@ -48,6 +54,7 @@ for (var i=0;i<mapsur.length;i++) {
 	var sc=mapsur[i];
 	if (typeof(sc)=='undefined') {
 		sc=0;
+		surunknown++;
 		mapsur[i]=0;
 	}
 	surstr+=String.fromCharCode(0x23+sc);
@@ -65,8 +72,8 @@ console.log('BMP count ',mapbmp.length);
 console.log('SUR count ',mapsur.length);
 
 var output="";
-output+='exports.bmpstroke="'+bmpstr+'";\r\n';
-output+='exports.surstroke="'+surstr+'";\r\n';
+output+='exports.bmpRLE="'+bmpstr+'";\r\n';
+output+='exports.surRLE="'+surstr+'";\r\n';
 fs.writeFileSync('kTotalStrokes_str.js',output,'utf8');
 
 //testing
@@ -87,3 +94,6 @@ var  getstroke=function(ch) {
 }
 
 if (getstroke('龘')!=48) throw 'read data wrong!';
+
+console.log("bmp unknown count",bmpunknown);
+console.log("surrogate unknown count",surunknown);

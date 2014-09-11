@@ -2,7 +2,8 @@
   generate extension E stroke count
 */
 var fs=require("fs");
-var charstroke=JSON.parse(fs.readFileSync("./kTotalStrokes.js","utf8"));
+//var charstroke=require("./kTotalStrokes.js");
+var charstroke=JSON.parse(fs.readFileSync("./kTotalStrokes.json","utf8"));
 var exte=fs.readFileSync("../kzy-chise/raw/IDS-UCS-Ext-E.txt","utf8").split("\n");
 var api=require("../kzy-chise/api.js");
 var hasstroke=0,nostroke=0;
@@ -15,7 +16,7 @@ var parseLine=function(line,idx) {
 	var parts=api.parseIDS(data[2]);
 	var strokecount=0;
 	for (var i=0;i<parts.length;i++) {
-		
+		if (!parts[i]) continue;
 		var sc=charstroke[parts[i]];
 		if (sc) {
 			strokecount+=sc;

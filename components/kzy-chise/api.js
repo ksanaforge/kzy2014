@@ -3,7 +3,7 @@ var parseIDS=function(ids) {
 	var res=[];
 	while (i<ids.length) {
 		var code=ids.charCodeAt(i);
-		token=ids[i];
+		var token=ids[i];
 		if (code>=0x2ff0 && code<=0x2fff) {
 			i++; //skip idc
 			continue;

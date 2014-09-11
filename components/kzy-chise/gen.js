@@ -3,7 +3,7 @@ var path=require("path");
 var api=require("./api");
 var decompose={};
 var files=["Ext-A","Basic","Ext-B-1","Ext-B-2","Ext-B-3","Ext-B-4","Ext-B-5","Ext-B-6"
-,"Ext-C","Ext-D","Ext-D"];
+,"Ext-C","Ext-D","Ext-E"];
 
 
 var parseLine=function(line,idx) {

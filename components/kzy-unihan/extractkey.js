@@ -27,7 +27,7 @@ for (var i=0;i<arr.length;i++) {
 	} else {
 		var ch=String.fromCharCode(unicode);
 	}
-	out.push('"'+ch+'":'+stroke);
+	if (ch.charCodeAt(0) && stroke) out.push('"'+ch+'":'+stroke);
 	k++;
 	if (k % 10 === 0) {
 		out.push('\n');
@@ -37,6 +37,6 @@ for (var i=0;i<arr.length;i++) {
 var output=out.join(",").replace(/,\n/g,'\n');
 
 //output=out.map(function(o){return o.substr(1)})
-fs.writeFileSync(outputfn,"module.exports={"+output+'}','utf8');
+fs.writeFileSync(outputfn,"{"+output+'}','utf8');
 console.timeEnd("loop");
 console.log(arr.length,count);

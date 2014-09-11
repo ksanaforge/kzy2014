@@ -22,7 +22,7 @@ var config={
 		config:"simple1"	
 	},
 	extra: {
-		chise: getChise()
+		chiseids: getChise()
 	}
 	,estimatesize:10430400
 	,glob:"chise.xml"

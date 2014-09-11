@@ -3,6 +3,8 @@ var kse=Require('ksana-document').kse; // Ksana Search Engine
 var bootstrap=Require("bootstrap");  
 var fileinstaller=Require("fileinstaller");  // install files to browser sandboxed file system
 var kageglyph=Require("kageglyph");
+var glypheme=Require("glypheme");
+var chise=Require("chise");
 var require_kdb=[  //list of ydb for running this application
   {filename:"glyphwiki.kdb"  , url:"http://ya.ksana.tw/kdb/glyphwiki.kdb" , desc:"Glyphiwiki"}  
  ,{filename:"chise.kdb"  , url:"http://ya.ksana.tw/kdb/chise.kdb" , desc:"Chise"}
@@ -20,10 +22,14 @@ var main = React.createClass({
   },
   autosearch:function() {
     clearTimeout(this.timer);
-    this.timer=setTimeout(this.dosearch.bind(this),500);
+    this.timer=setTimeout(this.dosearch,500);
   },
   dosearch:function() {   
-    console.log("dosearch")
+    var tofind=this.refs.tofind.getDOMNode().value;
+    chise.load(tofind,function(partindex){
+      var res=glypheme.search(partindex,tofind);  
+      console.log(res);
+    });
   }, 
   openFileinstaller:function(autoclose) { // open file dialog, autoclose==true for initalizing application
 
@@ -39,7 +45,8 @@ var main = React.createClass({
   renderinputs:function() {  // input interface for search
     if (this.state.db) {
       return ( 
-        <div><input size="10" className="tofind" ref="tofind"  onInput={this.autosearch} defaultValue="甬"></input>
+        <div><input size="10" className="tofind" ref="tofind" 
+        onInput={this.autosearch} defaultValue="奇"></input>
         </div>
         )      
     } else {
