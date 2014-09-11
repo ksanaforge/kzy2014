@@ -16,13 +16,17 @@ var main = React.createClass({
   onReady:function(usage,quota) {  //handler when kdb is ready
     if (!this.state.glyphwiki) kde.open("glyphwiki",function(db){
         this.setState({glyphwiki:db});  
-        //var k=<kageglyph db={this.state.glyphwiki} code="u4e03" size="64"/>
         var that=this;
-        db.get(["extra","glyphwiki","$"],function(){}); //workaround to prefetch
+        //var k=<kageglyph db={this.state.glyphwiki} code="u4e03" size="64"/>
+        db.get([["extra","glyphwiki","$$"],
+        ["extra","glyphwiki","$"]],function(){}); //workaround to prefetch
+
         setTimeout(
           function(){
             that.dosearch()
           },10);
+      
+      //  this.dosearch();
     },this);      
     this.setState({dialog:false,quota:quota,usage:usage});
   },
@@ -35,7 +39,7 @@ var main = React.createClass({
     chise.load(tofind,function(partindex){
       var res=glypheme.search(partindex,tofind);
       if (res.length>100) res.length=100;
-      this.setState({glyphs:res,todraw:JSON.parse(JSON.stringify(res))});
+      this.setState({glyphs:res});
     },this);
   }, 
   openFileinstaller:function(autoclose) { // open file dialog, autoclose==true for initalizing application

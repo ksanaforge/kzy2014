@@ -43,12 +43,13 @@ var gen=function() {
 
 		//split into smaller group
 		var group='$';
+
 		var sep=key.indexOf('_');
 		if (sep==-1) sep=key.indexOf('-');
 		if (sep >-1) {
 			group=key.substring(0,sep);
 		} else {
-			if (key.length==6 && key[1]=='2') group='$$'
+			if (key.length==6 && key[1]=='2') group='$$';
 		}
 		var fullkey=key;
 		//remove group prefix , save some space
