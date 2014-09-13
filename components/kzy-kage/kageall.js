@@ -2164,7 +2164,7 @@ function dfDrawFont(kage, polygons, a1, a2, a3, x1, y1, x2, y2, x3, y3, x4, y4){
       cdDrawLine(kage, polygons, x3, y3, x4, y4, 6, a3);
       break;
     case 4:
-      rate = 6;
+      var rate = 6;
       if((x3 - x2) * (x3 - x2) + (y3 - y2) * (y3 - y2) < 14400){ // smaller than 120 x 120
         rate = Math.sqrt((x3 - x2) * (x3 - x2) + (y3 - y2) * (y3 - y2)) / 120 * 6;
       }

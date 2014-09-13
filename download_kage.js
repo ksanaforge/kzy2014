@@ -16,6 +16,7 @@ var combinefile=function() {
 
 	//work around for passing use strict
 	out[2]=out[2].replace("    temp = new Array(2);","    var temp = new Array(2);");
+	out[5]=out[5].replace("rate = 6;","var rate = 6;");
 	fs.writeFileSync(targetpath+"/kageall.js",out.join("\n"),"utf8");
 }
 var download=function() {

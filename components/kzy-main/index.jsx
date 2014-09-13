@@ -9,24 +9,15 @@ var require_kdb=[  //list of ydb for running this application
   {filename:"glyphwiki.kdb"  , url:"http://ya.ksana.tw/kdb/glyphwiki.kdb" , desc:"Glyphiwiki"}  
  ,{filename:"chise.kdb"  , url:"http://ya.ksana.tw/kdb/chise.kdb" , desc:"Chise"}
 ];    
+
 var main = React.createClass({
   getInitialState: function() {
-    return {res:null,db:null,glyphs:[],glyphwiki:null};
+    return {res:null,db:null,glyphs:[],glyphwiki:null,bigglyph:0};
   },
   onReady:function(usage,quota) {  //handler when kdb is ready
     if (!this.state.glyphwiki) kde.open("glyphwiki",function(db){
         this.setState({glyphwiki:db});  
-        var that=this;
-        //var k=<kageglyph db={this.state.glyphwiki} code="u4e03" size="64"/>
-        db.get([["extra","glyphwiki","$$"],
-        ["extra","glyphwiki","$"]],function(){}); //workaround to prefetch
-
-        setTimeout(
-          function(){
-            that.dosearch()
-          },10);
-      
-      //  this.dosearch();
+        this.dosearch();
     },this);      
     this.setState({dialog:false,quota:quota,usage:usage});
   },
@@ -55,7 +46,7 @@ var main = React.createClass({
     if (this.state.glyphwiki) {
       return ( 
         <div><input size="10" className="tofind" ref="tofind" 
-        onInput={this.autosearch} defaultValue="奇4"></input>
+        onInput={this.autosearch} defaultValue="法"></input>
         </div>
         )       
     } else {
@@ -65,10 +56,36 @@ var main = React.createClass({
   fileinstallerDialog:function() { //open the file installer dialog
       this.setState({dialog:true});
   },
+  showBigGlyph:function(e) {
+    var n=e.target;
+    while (n && n.nodeName!="BUTTON") n=n.parentNode;
+    var code=n.dataset['code'];
+
+    this.setState({bigglyph:code});
+  },
+  renderBigGlyph:function() {
+    if (this.state.bigglyph) {
+      return <kageglyph db={this.state.glyphwiki}
+      code={this.state.bigglyph} size="512"/>
+    }
+  },
+
   renderGlyph:function(code) {
     if (!this.state.glyphwiki) return null;
-    return <kageglyph db={this.state.glyphwiki} 
-      code={"u"+code.toString(16)} size="64"/>
+    var db=this.state.glyphwiki;
+    var unicode=code.toString(16);
+    var kagecode="u"+code.toString(16);
+    var glyph=function() {
+        if (parseInt(code)<=0x2A6DF) {
+          return chise.api.ucs2string(code);
+        } else {
+          return <kageglyph db={db} code={"u"+unicode} size="48"/>
+        }
+    }
+    return <button className="candidate" title={unicode} 
+     onClick={this.showBigGlyph} data-code={"u"+unicode}>
+    {glyph()}
+    </button>
   },
   render: function() {  //main render routine
     if (!this.state.quota) { // install required db
@@ -78,7 +95,7 @@ var main = React.createClass({
         <div>{this.state.dialog?this.openFileinstaller():null}
           {this.renderinputs()}
           {this.state.glyphs.map(this.renderGlyph)}
-          
+          <div>{this.renderBigGlyph()}</div>
         </div>
       );
     }
