@@ -29,7 +29,7 @@ var main = React.createClass({
     var tofind=this.refs.tofind.getDOMNode().value;
     chise.load(tofind,function(partindex){
       var res=glypheme.search(partindex,tofind);
-      if (res.length>100) res.length=100;
+      if (res.length>300) res.length=300;
       this.setState({glyphs:res});
     },this);
   }, 
@@ -63,20 +63,24 @@ var main = React.createClass({
 
     this.setState({bigglyph:code});
   },
-  renderBigGlyph:function() {
+  renderBigGlyph:function() { 
     if (this.state.bigglyph) {
-      return <kageglyph db={this.state.glyphwiki}
-      code={this.state.bigglyph} size="512"/>
+      return <div><span className="unicode">{this.state.bigglyph.toString(16)}</span><br/>
+      <kageglyph db={this.state.glyphwiki}
+      code={this.state.bigglyph} size="512"/></div>
     }
   },
 
   renderGlyph:function(code) {
     if (!this.state.glyphwiki) return null;
+    code=parseInt(code);
     var db=this.state.glyphwiki;
     var unicode=code.toString(16);
     var kagecode="u"+code.toString(16);
     var glyph=function() {
-        if (parseInt(code)<=0x2A6DF) {
+        var rangestart=0x4e00,rangeend=0x20000;
+        //var range=0x2A6DF; //extension C start
+        if (code>=rangestart && code<rangeend) {
           return chise.api.ucs2string(code);
         } else {
           return <kageglyph db={db} code={"u"+unicode} size="48"/>
@@ -104,13 +108,13 @@ var main = React.createClass({
       if (this.refs.tofind) this.refs.tofind.getDOMNode().focus();
   },
   componentDidMount:function() {
-    this.focus();
+    //this.focus();
     kde.open("glyphwiki",function(db){
       this.setState({glyphwiki:db});
     },this);
   },
   componentDidUpdate:function() {
-    this.focus();
+    //this.focus();
   } 
 });
 var resultlist=React.createClass({  //should search result
