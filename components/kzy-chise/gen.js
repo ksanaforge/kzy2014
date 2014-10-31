@@ -1,5 +1,3 @@
-var fs=require("fs");
-var path=require("path");
 var api=require("./api");
 var decompose={};
 var glyphcount=0;
@@ -20,12 +18,16 @@ var parseLine=function(line,idx) {
 	}
 }
 var parseFile=function(file) {
+	var fs=require("fs");
 	var fn="raw/IDS-UCS-"+file+".txt";
 	var arr=fs.readFileSync(fn,"utf8").split("\n");
 	console.log("parsing",fn);
 	arr.map(parseLine);
 }
 var gen=function(){
+	var fs=require("fs");
+	var path=require("path");
+
 	files.map(parseFile);
 	var out=[];
 	for (var i in decompose) {
@@ -40,6 +42,9 @@ var gen=function(){
 	console.log("part count",out.length);
 	fs.writeFileSync("decompose.json",output,"utf8");
 }
-if (__filename==path.resolve(process.argv[1])) gen();
+if (typeof process!="undefined" &&
+	  process.platform!="node-webkit" &&
+	  typeof __filename!="undefined" &&
+	  __filename==path.resolve(process.argv[1])) gen();
 
 module.exports=gen;

@@ -67,7 +67,7 @@ var main = React.createClass({
     if (this.state.bigglyph) {
       return <div><span className="unicode">{this.state.bigglyph.toString(16)}</span><br/>
       <kageglyph db={this.state.glyphwiki}
-      code={this.state.bigglyph} size="512"/></div>
+      code={this.state.bigglyph} size="400"/></div>
     }
   },
 

@@ -2,8 +2,8 @@
 //new module filename must be added to scripts section of ./component.js and export here
 var unihan = {
   api: require("./api"),
-  load:require("./load")
+  load:require("./load"),
+  gen:require("./gen")
 }
 
-if (typeof process!="undefined") unihan.gen=require("./gen");
 module.exports=unihan;

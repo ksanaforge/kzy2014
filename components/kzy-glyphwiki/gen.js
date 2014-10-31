@@ -82,5 +82,8 @@ var gen=function() {
 		
 }
 
-if (typeof process!="undefined" &&__filename==require("path").resolve(process.argv[1])) gen();
+if (typeof process!="undefined" &&
+	  process.platform!="node-webkit" &&
+	  typeof __filename!="undefined" &&
+	  __filename==require("path").resolve(process.argv[1])) gen();
 module.exports=gen;
