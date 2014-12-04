@@ -26,7 +26,8 @@ var parseFile=function(file) {
 }
 var gen=function(){
 	var fs=require("fs");
-	var path=require("path");
+var path=require("path");
+	
 
 	files.map(parseFile);
 	var out=[];
@@ -45,6 +46,6 @@ var gen=function(){
 if (typeof process!="undefined" &&
 	  process.platform!="node-webkit" &&
 	  typeof __filename!="undefined" &&
-	  __filename==path.resolve(process.argv[1])) gen();
+	  __filename==require("path").resolve(process.argv[1])) gen();
 
 module.exports=gen;

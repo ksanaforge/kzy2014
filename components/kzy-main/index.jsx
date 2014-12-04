@@ -3,7 +3,7 @@ var kse=Require('ksana-document').kse; // Ksana Search Engine
 var bootstrap=Require("bootstrap");  
 var Fileinstaller=Require("fileinstaller");  // install files to browser sandboxed file system
 var Kageglyph=Require("kageglyph");
-var Glypheme=Require("glypheme");
+var glypheme=Require("glypheme");
 var chise=Require("chise");
 var require_kdb=[  //list of ydb for running this application
   {filename:"glyphwiki.kdb"  , url:"http://ya.ksana.tw/kdb/glyphwiki.kdb" , desc:"Glyphiwiki"}  

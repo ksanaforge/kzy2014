@@ -1,0 +1,41 @@
+{
+  "name": "kzy",
+  "repo": "https://github.com/ksanaforge/kzy",
+  "description": "hello world",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {
+    "ksanaforge/boot": "*",
+    "brighthas/bootstrap": "*",
+    "ksana/document": "*",
+    "ksanaforge/stacktoc": "*",
+    "ksanaforge/swipe": "*",
+    "ksanaforge/fileinstaller": "*",
+    "ksanaforge/checkbrowser": "*",
+    "ksanaforge/htmlfs": "*",
+    "kzy/glypheme": "*",
+    "kzy/chise": "*",
+    "kzy/unihan": "*",
+    "kzy/kage": "*",
+    "kzy/kageglyph": "*",
+    "kzy/main": "*",
+    "kzy/glyphwiki": "*"
+   
+  },
+  "development": {},
+  "paths": [
+    "components",
+    "../components",
+    "../../components",
+    "../node_modules/",
+    "../../node_modules/"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": [
+    "index.js"
+  ],
+  "styles": [
+    "index.css"
+  ]
+}

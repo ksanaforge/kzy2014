@@ -1,0 +1,12 @@
+{
+  "name": "chise",
+  "repo": "ksanaforge/chise",
+  "description": "hello world",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {},
+  "development": {},
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": ["index.js","api.js","gen.js","load.js"]
+}

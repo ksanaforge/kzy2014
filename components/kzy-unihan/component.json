@@ -1,0 +1,12 @@
+{
+  "name": "unihan",
+  "repo": "ksanaforge/unihan",
+  "description": "hello world",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {},
+  "development": {},
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": ["index.js"]
+}
