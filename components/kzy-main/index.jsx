@@ -1,9 +1,9 @@
 var kde=Require('ksana-document').kde;  // Ksana Database Engine
 var kse=Require('ksana-document').kse; // Ksana Search Engine
 var bootstrap=Require("bootstrap");  
-var fileinstaller=Require("fileinstaller");  // install files to browser sandboxed file system
-var kageglyph=Require("kageglyph");
-var glypheme=Require("glypheme");
+var Fileinstaller=Require("fileinstaller");  // install files to browser sandboxed file system
+var Kageglyph=Require("kageglyph");
+var Glypheme=Require("glypheme");
 var chise=Require("chise");
 var require_kdb=[  //list of ydb for running this application
   {filename:"glyphwiki.kdb"  , url:"http://ya.ksana.tw/kdb/glyphwiki.kdb" , desc:"Glyphiwiki"}  
@@ -39,7 +39,7 @@ var main = React.createClass({
         require_kdb[i].url=window.location.origin+"/"+require_kdb[i].filename;  
       }
     } 
-    return <fileinstaller quota="512M" autoclose={autoclose} needed={require_kdb} 
+    return <Fileinstaller quota="512M" autoclose={autoclose} needed={require_kdb} 
                      onReady={this.onReady}/>
   },   
   renderinputs:function() {  // input interface for search
@@ -66,7 +66,7 @@ var main = React.createClass({
   renderBigGlyph:function() { 
     if (this.state.bigglyph) {
       return <div><span className="unicode">{this.state.bigglyph.toString(16)}</span><br/>
-      <kageglyph db={this.state.glyphwiki}
+      <Kageglyph db={this.state.glyphwiki}
       code={this.state.bigglyph} size="400"/></div>
     }
   },
@@ -83,7 +83,7 @@ var main = React.createClass({
         if (code>=rangestart && code<rangeend) {
           return chise.api.ucs2string(code);
         } else {
-          return <kageglyph db={db} code={"u"+unicode} size="48"/>
+          return <Kageglyph db={db} code={"u"+unicode} size="48"/>
         }
     }
     return <button className="candidate" title={unicode} 

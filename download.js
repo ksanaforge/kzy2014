@@ -7,16 +7,22 @@ var tar=require("tar");
 
 var doglyphwiki=function(){
 	var chunk=0;
+	var targetpath=__dirname + "/components/kzy-glyphwiki/raw/";
+	targetpath=targetpath.replace(/\//g,require("path").sep);
+	console.log(targetpath);
 	console.log("downloading glyphwiki");
+	if (!fs.existsSync(targetpath)) {
+		fs.mkdirSync(targetpath);
+	}
 	request("http://glyphwiki.org/dump.tar.gz")
 	  .pipe(zlib.createGunzip())
-	  .pipe(tar.Extract({path:__dirname + "/components/kzy-glyphwiki/raw"}))
+	  .pipe(tar.Extract({path:targetpath}))
 	  .on("data",function(res) {
 	  	chunk++;
 	  	if (chunk%1024==0) process.stdout.write(".");
 	  })
 	  .on("end",function(){
-  		fs.unlinkSync(__dirname + "components/kzy-glyphwiki/raw/dump_all_versions.txt");
+  		fs.unlinkSync(targetpath+"dump_all_versions.txt");
   		dounihan();
 	  });
 }
